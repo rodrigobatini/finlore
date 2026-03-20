@@ -1,110 +1,88 @@
-# 📋 PLANO GERAL - Finance News Platform MVP
+# PLANO GERAL - Finlore MVP
 
-## 🎯 Objetivo
-Criar plataforma de notícias financeiras com IA contextual, Bento Grid, dark mode e RAG para tutor inteligente.
+## Objetivo
+Criar uma plataforma de noticias de financas, investimento e economia com:
+- ingestao por APIs publicas e RSS
+- correlacao de conceitos para contexto
+- tutor IA para ajudar o usuario a aprender
 
 ---
 
-## ✅ PROGRESSO ATUAL
+## Status atual (real)
 
-### **1. Estrutura Monorepo** ✅ COMPLETO
-```
-opencode-test/
+### 1) Estrutura monorepo - OK
+```txt
+finlore/
 ├── turbo.json
 ├── pnpm-workspace.yaml
 ├── package.json
-├── web-client/ ✅
-├── api-funcs/
-├── app-mobile/
-└── knowledge-base/
+├── web-client/        # frontend Vue funcional
+├── api-funcs/         # base backend/funcoes
+├── app-mobile/        # estrutura inicial mobile
+├── knowledge-base/    # migracoes/schema inicial
+├── README.md
+└── CONTEXTO-AMANHA.md
 ```
 
-### **2. Web Client Vue** ✅ 60% FEITO
-- ✅ Configuração Vite + Vue
-- ✅ Stores Pinia: auth, user, knowledge
-- ✅ Views: NewsFeed
-- ✅ Lib: Supabase client
+### 2) Frontend web - OK (MVP visual)
+- UI redesenhada e navegacao funcional
+- rotas: Noticias, Mercado, Tutor
+- tema dark/light com persistencia local
+- feed com fallback mock quando Supabase nao esta configurado
+- build validado com `pnpm --filter web-client build`
 
-### **3. Faltantes Críticos** ⏳
-1. **Componentes UI** (NewsCard, TutorOverlay, ThemeSwitcher, etc.)
-2. **Main App.vue** com layout Bento Grid
-3. **Router** com lazy loading
-4. **Supabase schema** (migrations SQL)
-5. **Supabase Functions** para RAG
-6. **Capacitor** para mobile
+### 3) Pendencias criticas
+1. Fechar schema final no Supabase
+2. Ingestao real de noticias (RSS/APIs)
+3. Correlacao de conceitos (news -> conceitos -> ativos)
+4. Endpoint inicial do tutor com contexto real
+5. Deploy web com envs e checklist de observabilidade
 
 ---
 
-## 📁 LOCALIZAÇÃO DOS ARQUIVOS
+## Localizacao do projeto
 
-O projeto está em: `/home/batini/Projetos/opencode-test/`
-
-### **Web Client:**
-```
-web-client/
-  ├── package.json           ✅
-  ├── vite.config.ts         ✅
-  ├── index.html             ✅
-  └── src/
-      ├── lib/
-      │   └── supabase.ts    ✅
-      ├── stores/
-      │   ├── auth.ts        ✅
-      │   ├── user.ts        ✅
-      │   └── knowledge.ts   ✅
-      ├── views/
-      │   └── NewsFeed.vue   ✅
-      ├── components/        ⏳ (falta criar)
-      ├── router/            ⏳ (falta criar)
-      └── App.vue            ⏳ (falta criar)
-```
-
-### **Onde está o MD deste plano?**
-```
-/home/batini/Projetos/opencode-test/PLANO.md
-```
+- Repo local: `/home/batini/Projetos/finlore`
+- Repo GitHub: `https://github.com/rodrigobatini/finlore`
 
 ---
 
-## ⏭️ PRÓXIMOS PASSOS
+## Proximos passos (priorizados)
 
-### **IMEDIATO (30 min):**
-1. Criar todos os componentes UI restantes
-2. Criar `App.vue` + `router/index.ts`
-3. Escrever migrations SQL para Supabase
-4. Criar prompts do tutor IA
+### Bloco 1 - Dados reais no feed (alta prioridade)
+1. Definir tabelas finais: `news`, `sources`, `concepts`, `news_concepts`
+2. Criar rotina de ingestao para 3-5 fontes
+3. Normalizar e persistir noticias
+4. Conectar frontend para leitura em producao de dados reais
 
-### **EM SEGUIR (1-2h):**
-5. Setup Capacitor no mobile
-6. Criar Supabase project + migrations
-7. Run local e testar tudo
+### Bloco 2 - Tutor IA v1 (alta prioridade)
+5. Criar endpoint simples em `api-funcs` para resposta contextual
+6. Adicionar prompt base com estrutura didatica
+7. Exibir resposta real no `TutorOverlay`/`TutorView`
 
-### **EM SEGUIR (2h):**
-8. Deploy Vercel para web
-9. Capacitor build para mobile
-
----
-
-## 🛠️ RECURSOS UTILIZADOS
-
-- **Front:** Vue 3 + Vite + Pinia + Vue Router
-- **Backend:** Supabase PostgreSQL + pgvector
-- **IA:** Llama 3 (8B) via Ollama local
-- **Mobile:** Capacitor (wrapper para Vue)
-- **Embeddings:** nomic-embed-text + RAG
+### Bloco 3 - Entrega e operacao (media prioridade)
+8. Configurar deploy no Vercel
+9. Configurar variaveis de ambiente
+10. Adicionar logs minimos para ingestao e falhas
 
 ---
 
-## 📞 LINKS IMPORTANTES
-
-- **Supabase:** https://supabase.com
-- **Ollama:** https://ollama.ai
-- **Vue Docs:** https://vuejs.org
-- **Capacitor:** https://capacitorjs.com
-- **Vercel:** https://vercel.com
-- **GitHub:** https://github.com
+## Stack
+- Front: Vue 3 + Vite + Pinia + Vue Router
+- Backend/Dados: Supabase (Postgres)
+- IA: pipeline RAG (incremental)
+- Mobile: Capacitor (fase posterior)
 
 ---
 
-**Status:** 🟢 Em andamento - MVP está 40% completo
-**Próximo:** Componentes UI + Supabase schema
+## Referencias
+- Supabase: https://supabase.com
+- Vue: https://vuejs.org
+- Vite: https://vitejs.dev
+- Capacitor: https://capacitorjs.com
+- Vercel: https://vercel.com
+
+---
+
+**Status:** em andamento, com frontend pronto para demonstracao.  
+**Foco seguinte:** dados reais + tutor contextual v1.
