@@ -1,0 +1,16 @@
+name: Ingest News Cron
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ingestion endpoint
+        run: |
+          curl -sS -X POST "${{ secrets.INGEST_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

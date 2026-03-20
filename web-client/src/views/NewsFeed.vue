@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import NewsCard from '@/components/NewsCard.vue'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { useAuthStore } from '@/stores/auth'
 
 interface News {
   id: string
@@ -23,6 +24,8 @@ const newsList = ref<News[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const usingMockData = ref(false)
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || ''
+const authStore = useAuthStore()
 
 const mockNews: News[] = [
   {
@@ -73,9 +76,29 @@ const fetchNews = async () => {
   error.value = null
   usingMockData.value = false
 
+  if (apiBaseUrl) {
+    try {
+      const search = new URLSearchParams()
+      if (queryTopic.value) search.set('topic', queryTopic.value)
+      if (queryFeedId.value) search.set('source', queryFeedId.value)
+      if (authStore.user?.id) search.set('user_id', authStore.user.id)
+      const response = await fetch(`${apiBaseUrl}/feed?${search.toString()}`)
+      if (!response.ok) throw new Error(`API ${response.status}`)
+      const payload = await response.json()
+      newsList.value = payload.data || []
+      loading.value = false
+      return
+    } catch (apiError: any) {
+      error.value = `Falha ao carregar da API (${apiError?.message || 'erro desconhecido'}).`
+    }
+  }
+
   if (!isSupabaseConfigured || !supabase) {
     usingMockData.value = true
     newsList.value = mockNews
+    if (!error.value) {
+      error.value = 'API indisponivel e Supabase nao configurado. Exibindo modo demonstracao.'
+    }
     loading.value = false
     return
   }
@@ -106,6 +129,20 @@ const formatDate = (date: string) => {
   return Number.isNaN(value.getTime()) ? 'Data indisponivel' : new Intl.DateTimeFormat('pt-BR').format(value)
 }
 
+const cleanSnippet = (value: string) =>
+  (value || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/https?:\/\/\S+/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
 onMounted(fetchNews)
 </script>
 
@@ -114,7 +151,7 @@ onMounted(fetchNews)
     <h1 class="feed-title">{{ pageTitle }}</h1>
     <p class="feed-description">Ultimas noticias financeiras com contexto para aprendizado</p>
     <p v-if="usingMockData" class="mock-banner">
-      Modo demonstracao ativo: configure VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY para usar dados reais.
+      Modo demonstracao ativo: configure API backend e Supabase para usar dados reais.
     </p>
 
     <div v-if="loading" class="loading-indicator">Carregando noticias...</div>
@@ -126,7 +163,7 @@ onMounted(fetchNews)
         v-for="news in newsList"
         :key="news.id"
         :title="news.title"
-        :excerpt="news.snippet"
+        :excerpt="cleanSnippet(news.snippet)"
         :source="news.source || 'Feed publico'"
         :time="formatDate(news.published_at)"
         :tags="news.asset_mentions || []"

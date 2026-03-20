@@ -39,6 +39,7 @@ const open = () => {
   border-radius: 16px;
   padding: 1rem;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
 }
 
 .news-card:hover {
@@ -59,6 +60,11 @@ const open = () => {
   font-size: 1.04rem;
   color: var(--text);
   line-height: 1.35;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .excerpt {
@@ -66,6 +72,11 @@ const open = () => {
   color: var(--text-soft);
   font-size: 0.9rem;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tags {

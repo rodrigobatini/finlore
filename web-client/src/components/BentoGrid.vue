@@ -7,7 +7,7 @@
         Curadoria de noticias, correlacao de conceitos e tutor para transformar manchete em aprendizado.
       </p>
       <div class="hero-actions">
-        <router-link to="/" class="action primary">Explorar feed</router-link>
+        <router-link to="/noticias" class="action primary">Explorar feed</router-link>
         <router-link to="/tutor" class="action">Abrir tutor</router-link>
       </div>
     </section>
@@ -22,7 +22,7 @@
 
 <script setup>
 const panels = [
-  { id: 1, icon: '📰', title: 'Noticias em destaque', subtitle: 'Principais movimentos do dia', to: '/' },
+  { id: 1, icon: '📰', title: 'Noticias em destaque', subtitle: 'Principais movimentos do dia', to: '/noticias' },
   { id: 2, icon: '📈', title: 'Pulso de mercado', subtitle: 'Indices, moedas e sentimento', to: '/mercado' },
   { id: 3, icon: '🎓', title: 'Tutor orientado', subtitle: 'Explique conceitos e estrategias', to: '/tutor' }
 ]

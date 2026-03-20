@@ -2,26 +2,25 @@
   <div id="app" :class="{ dark: isDark }">
     <Header />
     <main class="main-content shell">
-      <BentoGrid v-if="showWelcome" />
-      <router-view v-else />
+      <router-view />
     </main>
     <TutorOverlay />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted } from 'vue'
 import Header from '@/components/Header.vue'
-import BentoGrid from '@/components/BentoGrid.vue'
 import TutorOverlay from '@/components/TutorOverlay.vue'
 import { useDark } from '@/composables/useDark.js'
+import { useAuthStore } from '@/stores/auth'
 
-const showWelcome = ref(true)
 const { isDark } = useDark()
+const authStore = useAuthStore()
 
-setTimeout(() => {
-  showWelcome.value = false
-}, 1200)
+onMounted(() => {
+  authStore.initSession()
+})
 </script>
 
 <style>

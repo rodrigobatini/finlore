@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { supabase } from '@/lib/supabase'
+import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 
 export const useKnowledgeStore = defineStore('knowledge', {
   state: () => ({
@@ -8,6 +8,10 @@ export const useKnowledgeStore = defineStore('knowledge', {
   }),
   actions: {
     async fetchArticles() {
+      if (!isSupabaseConfigured || !supabase) {
+        this.articles = []
+        return
+      }
       const { data } = await supabase.from('news').select('*')
       this.articles = data || []
     }
