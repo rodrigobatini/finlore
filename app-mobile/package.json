@@ -1,0 +1,12 @@
+{
+  "name": "app-mobile",
+  "version": "1.0.0",
+  "description": "Finance News Platform Mobile App",
+  "main": "dist/www/index.html",
+  "author": "Finance News Team",
+  "scripts": {
+    "run": "concurrently -p \"[{name}]\" -n \"BLUE,YELLOW,WHITE,YELLOW,WHITE\" -r \"yarn vite dev {watch} --port 3000\" \"npm run capacitor:sync\" \"npm run capacitor:open\"",
+    "capacitor:sync": "npx cap sync",
+    "capacitor:open": "npx cap open"
+  }
+}

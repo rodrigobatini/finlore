@@ -1,0 +1,5 @@
+packages:
+  - web-client
+  - app-mobile
+  - api-funcs
+  - knowledge-base

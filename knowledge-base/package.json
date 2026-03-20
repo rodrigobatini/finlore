@@ -1,0 +1,6 @@
+{
+  "name": "knowledge-base",
+  "version": "0.1.0",
+  "description": "Knowledge base for RAG AI",
+  "type": "module"
+}
